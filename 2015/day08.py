@@ -2,7 +2,7 @@ from aoc_utils import data_import
 import ast
 
 # raw_data = data_import.get_input()
-data_import.preview()
+#data_import.preview()
 
 def data_prep(data):
     pass
@@ -28,14 +28,17 @@ def main_p2():
     with open("2015/input/day08.txt") as f:
         for line in f:
             line = line.strip()
-            encoded_line = fr"\"{line}\""
+            encoded_line = line.replace('\\', '\\\\')
+            encoded_line = encoded_line.replace('"', '\\"')
+
+            encoded_line = fr'"{encoded_line}"'
             memory_str = ast.literal_eval(line)
-            print(encoded_line, len(encoded_line))
+            print(encoded_line, len(encoded_line), memory_str, len(memory_str))
             total_code_chars += len(encoded_line)
-            total_memory_chars += len(memory_str)
-    
+            total_memory_chars += len(line)
+
     return total_code_chars - total_memory_chars
 
 if __name__ == "__main__":
-    print(main_p1())
+    #print(main_p1())
     print(main_p2())
