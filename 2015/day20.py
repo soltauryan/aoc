@@ -15,19 +15,13 @@ def find_divsors(num:int) -> set:
     return sorted(divisors)
 
 
-def limit_divisors(divisors:set) -> set:
-    if len(divisors) > 50:
-        return divisors[:50]
-    else:
-        return divisors
-
-
 def presents_total(divisors:List)-> int:
     return sum([elf * 10 for elf in divisors])
 
 
-def presents_total_p2(divisors:List)-> int:
-    return sum([elf * 11 for elf in divisors])
+def presents_total_p2(divisors:List, curr_num:int)-> int:
+    valid_divisors = [elf for elf in divisors if curr_num // elf <= 50]
+    return sum([elf * 11 for elf in valid_divisors]), valid_divisors
 
 
 def main_p1(data):
@@ -35,14 +29,14 @@ def main_p1(data):
     total = 0
     curr_num = 0
 
-    while total <= goal:
+    while total < goal:
         curr_num += 1
         divisors = find_divsors(curr_num)
         total = presents_total(divisors)
         if curr_num % 10_000 == 0:
             print(curr_num)
     
-    print(f"Lowest House: {curr_num}")
+    print(f"Lowest House: {curr_num:,}")
 
 
 def main_p2(data):
@@ -53,17 +47,17 @@ def main_p2(data):
     while total <= goal:
         curr_num += 1
         divisors = find_divsors(curr_num)
-        divisors = limit_divisors(divisors)
-        total = presents_total_p2(divisors)
-        if curr_num % 10_000 == 0:
-            print(f"{curr_num:,}")
+        total, divisors = presents_total_p2(divisors, curr_num)
+        if curr_num % 20_000 == 0:
+            print(f"{curr_num:,}", len(divisors), divisors)
     
-    print(f"Lowest House: {curr_num}")
+    print(f"Lowest House: {curr_num:,}")
+    print(f"Total: {total:,}")
 
 if __name__ == "__main__":
     # print(math.isqrt(500000))
-    main_p1(raw_data)
-    # main_p2(raw_data)
+    # main_p1(raw_data)
+    main_p2(raw_data)
     # main_p2(raw_data)   
     # num = 776160 
     # divisors = find_divsors(num)
