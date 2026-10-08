@@ -1,6 +1,12 @@
 from aoc_utils import data_import
 from dataclasses import dataclass
+
 raw_data = data_import.get_input()
+
+example = """inc a
+jio a, +2
+tpl a
+inc a"""
 
 @dataclass
 class TuringMachine:
@@ -13,12 +19,12 @@ class TuringMachine:
     def set_register_value(self, register, new_value):
         setattr(self, register, max(0, new_value))
 
-    def process_instruction(register):
+    def process_instruction(self, instruction_str):
         # Parse String
         offset = 0
-        i_str, r = instruction_str.split(" ", 1)
-        if ", " in r:
-            r, offset = r.split(", ")
+        i_str, register = instruction_str.split(" ", 1)
+        if ", " in register:
+            register, offset = register.split(", ")
             offset = int(offset)
 
         # Apply instruction logic
@@ -32,7 +38,7 @@ class TuringMachine:
             r = self.set_register_value(register, getattr(self, register) + 1)
             offset = 1
         elif i_str == "jmp":
-            r = None
+            offset = int(register)
         elif i_str == "jie":
             if getattr(self, register) % 2 != 0:
                 offset = 1
@@ -42,24 +48,47 @@ class TuringMachine:
         
         return offset
 
+def parse_instruction_string(input_str) -> list:
+    return input_str.splitlines()
 
 
-def parse_instruction(index:int, instruction_str:str):
+def main_p1():
+    instructs = parse_instruction_string(raw_data)
+    offset = 0
+    machine = TuringMachine()
+
+    while offset >= 0 and offset < len(instructs):
+        try:
+            current_instruct = instructs[offset]
+        except:
+            print("The while loop failed!")
+            raise ArithmeticError
+
+        offset += machine.process_instruction(current_instruct)
     
+    print(f"Register A: {machine.a}")
+    print(f"Register B: {machine.b}")
+        
+
+def main_p2():
+    instructs = parse_instruction_string(raw_data)
+    offset = 0
+    machine = TuringMachine(1, 0)
+
+    while offset >= 0 and offset < len(instructs):
+        try:
+            current_instruct = instructs[offset]
+        except:
+            print("The while loop failed!")
+            raise ArithmeticError
+
+        offset += machine.process_instruction(current_instruct)
     
-
-
-    # return instruction, register, value_delta, next_index
-
-def data_prep(data):
-    pass
-
-def main_p1(data):
-    pass
-
-def main_p2(data):
-    pass
+    print(f"Register A: {machine.a}")
+    print(f"Register B: {machine.b}")
 
 if __name__ == "__main__":
-    parse_instruction(0, "jio a, +2")
-    parse_instruction(0, "tpl a")
+    print("Part 1")
+    main_p1()
+    print("\nPart 2")
+    main_p2()
