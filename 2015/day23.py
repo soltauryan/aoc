@@ -56,6 +56,7 @@ def main_p1():
     instructs = parse_instruction_string(raw_data)
     offset = 0
     machine = TuringMachine()
+    count = 0
 
     while offset >= 0 and offset < len(instructs):
         try:
@@ -65,15 +66,18 @@ def main_p1():
             raise ArithmeticError
 
         offset += machine.process_instruction(current_instruct)
+        count += 1
     
     print(f"Register A: {machine.a}")
     print(f"Register B: {machine.b}")
+    print(f"Instruction Count: {count:,}")
         
 
 def main_p2():
     instructs = parse_instruction_string(raw_data)
     offset = 0
     machine = TuringMachine(1, 0)
+    count = 0
 
     while offset >= 0 and offset < len(instructs):
         try:
@@ -83,9 +87,11 @@ def main_p2():
             raise ArithmeticError
 
         offset += machine.process_instruction(current_instruct)
+        count += 1
     
     print(f"Register A: {machine.a}")
     print(f"Register B: {machine.b}")
+    print(f"Instruction Count: {count:,}")
 
 if __name__ == "__main__":
     print("Part 1")
