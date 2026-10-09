@@ -1,4 +1,5 @@
 from aoc_utils import data_import
+from aoc_utils.performance import time_function
 from dataclasses import dataclass
 
 raw_data = data_import.get_input()
@@ -51,7 +52,7 @@ class TuringMachine:
 def parse_instruction_string(input_str) -> list:
     return input_str.splitlines()
 
-
+@time_function
 def main_p1():
     instructs = parse_instruction_string(raw_data)
     offset = 0
@@ -72,7 +73,7 @@ def main_p1():
     print(f"Register B: {machine.b}")
     print(f"Instruction Count: {count:,}")
         
-
+@time_function
 def main_p2():
     instructs = parse_instruction_string(raw_data)
     offset = 0
